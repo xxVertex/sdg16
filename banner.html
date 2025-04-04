@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDG 16 Navigation Banner</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Banner Section -->
+    <div style="background: linear-gradient(135deg, #2c3e50, #3498db); padding: 1rem;">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+            <!-- Logo Section -->
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <img src="assets/images/global-goals.png" alt="SDG Logo" style="height: 80px;">
+                <h1 style="color: white; font-size: 1.5rem;">SDG 16 Initiative</h1>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav style="display: flex; gap: 1.5rem;">
+                <a href="main.html" target="index" style="color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; transition: background 0.3s;">
+                    Home
+                </a>
+                <a href="peace.html" target="index" style="color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; transition: background 0.3s;">
+                    Peace
+                </a>
+                <a href="justice.html" target="index" style="color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; transition: background 0.3s;">
+                    Justice
+                </a>
+                <a href="institutions.html" target="index" style="color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; transition: background 0.3s;">
+                    Institutions
+                </a>
+                <a href="survey.html" target="index" style="color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; transition: background 0.3s;">
+                    Survey
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation Toggle (Hidden by Default) -->
+    <div style="display: none; background: #2c3e50; padding: 1rem;">
+        <button style="background: none; border: none; color: white; font-size: 1.2rem;">
+            ☰ Menu
+        </button>
+    </div>
+    <!-- Marquee with Dynamic Date -->
+    <div><marquee id="dateMarquee">
+        <script type="text/javascript">document.write(Date())</script>
+    </marquee></div>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial="1.0">
+    <title>3D Fighting Game</title>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        canvas { display: block; }
+        #ui {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            font-size: 18px;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <div id="ui">
+        Player Health: <span id="playerHealth">100</span> | Enemies Killed: <span id="kills">0</span>
+    </div>
+    <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 2, 15);
+        camera.lookAt(0, 0, 0);
+
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Player (Cube)
+        const playerGeometry = new THREE.BoxGeometry(1, 1, 1); // Cube for player
+        const playerMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+        const player = new THREE.Mesh(playerGeometry, playerMaterial);
+        scene.add(player);
+        player.position.set(0, 0, 0);
+
+        let playerHealth = 100;
+        let isJumping = false;
+        let isRolling = false;
+        let gameOver = false;
+        let enemies = [];
+        let projectiles = [];
+        let kills = 0;
+        let enemyCount = 0;
+        let shotCount = 0;
+        let canShoot = true;
+        let cooldownTime = 3000; // 3 seconds cooldown
+        let lastShotTime = 0;
+
+        // Controls
+        const keys = {};
+        window.addEventListener('keydown', (event) => { keys[event.key] = true; });
+        window.addEventListener('keyup', (event) => { keys[event.key] = false; });
+
+        // Spawns enemies at random positions
+        function spawnEnemy() {
+            if (enemyCount >= 16) return; // Max 16 enemies
+            const enemyGeometry = new THREE.BoxGeometry(1, 1, 1); // Cube for enemy
+            const enemyMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+            const enemy = new THREE.Mesh(enemyGeometry, enemyMaterial);
+            scene.add(enemy);
+            // Random position for enemy
+            const spawnX = Math.random() * 12 - 6;
+            const spawnZ = Math.random() * -12 + -5;
+            enemy.position.set(spawnX, 0, spawnZ);
+            enemies.push(enemy);
+            enemyCount++;
+        }
+
+        // Create a projectile (cube) for attack
+        function createProjectile() {
+            if (!canShoot) return; // Prevent shooting during cooldown
+
+            const projectileGeometry = new THREE.BoxGeometry(0.3, 0.3, 0.3); // Cube projectile
+            const projectileMaterial = new THREE.MeshBasicMaterial({ color: 0x00ffff });
+            const projectile = new THREE.Mesh(projectileGeometry, projectileMaterial);
+            scene.add(projectile);
+            projectile.position.set(player.position.x, player.position.y, player.position.z);
+            projectiles.push(projectile);
+
+            // Increase shot count and check for cooldown
+            shotCount++;
+            if (shotCount >= 10) {
+                canShoot = false;
+                lastShotTime = Date.now();
+            }
+        }
+
+        // Update function
+        function update() {
+            if (gameOver) return;
+
+            // Check cooldown
+            if (!canShoot && Date.now() - lastShotTime >= cooldownTime) {
+                canShoot = true;
+                shotCount = 0; // Reset shot count after cooldown
+            }
+
+            // Player movement
+            if (keys['w'] && player.position.z > -20) player.position.z -= 0.1;
+            if (keys['s'] && player.position.z < 10) player.position.z += 0.1;
+            if (keys['a'] && player.position.x > -10) player.position.x -= 0.1;
+            if (keys['d'] && player.position.x < 10) player.position.x += 0.1;
+
+            // Jumping
+            if (keys['j'] && !isJumping) {
+                isJumping = true;
+                player.position.y += 1;
+                setTimeout(() => player.position.y -= 1, 500);
+                setTimeout(() => isJumping = false, 600);
+            }
+
+            // Rolling
+            if (keys['r'] && !isRolling) {
+                isRolling = true;
+                player.position.x += (keys['a'] ? -1 : (keys['d'] ? 1 : 0));
+                setTimeout(() => isRolling = false, 500);
+            }
+
+            // Enemy AI (chases player)
+            enemies.forEach((enemy, index) => {
+                const dx = player.position.x - enemy.position.x;
+                const dz = player.position.z - enemy.position.z;
+                const distance = Math.sqrt(dx * dx + dz * dz);
+
+                if (distance > 0.5) {
+                    enemy.position.x += (dx / distance) * 0.05;
+                    enemy.position.z += (dz / distance) * 0.05;
+                } else {
+                    // Enemy attacks when close
+                    playerHealth -= 1;
+                    document.getElementById('playerHealth').textContent = playerHealth;
+                    player.material.color.set(0xff0000);
+                    setTimeout(() => player.material.color.set(0x00ff00), 200);
+                }
+
+                // Attack logic (ranged attack)
+                projectiles.forEach((projectile, projectileIndex) => {
+                    const dx = projectile.position.x - enemy.position.x;
+                    const dz = projectile.position.z - enemy.position.z;
+                    const distance = Math.sqrt(dx * dx + dz * dz);
+
+                    if (distance < 1) {
+                        // Remove the enemy when hit by projectile
+                        scene.remove(enemy);
+                        enemies.splice(index, 1); // Remove enemy from array
+                        // Remove projectile
+                        scene.remove(projectile);
+                        projectiles.splice(projectileIndex, 1);
+                        kills++;
+                        document.getElementById('kills').textContent = kills;
+
+                        // Spawn a new enemy after one is defeated
+                        spawnEnemy();
+                    }
+                });
+            });
+
+            // Create projectile when spacebar is pressed
+            if (keys[' ']) { // Create a new projectile only when space is pressed
+                createProjectile();
+            }
+
+            // Move the projectiles forward
+            projectiles.forEach(projectile => {
+                projectile.position.z -= 0.2;
+            });
+
+            // Game over if player health reaches 0
+            if (playerHealth <= 0) {
+                alert("You lose!");
+                gameOver = true;
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            update();
+            renderer.render(scene, camera);
+        }
+
+        // Start by spawning the first enemy
+        spawnEnemy();
+
+        animate();
+    </script>
+</body>
+</html>

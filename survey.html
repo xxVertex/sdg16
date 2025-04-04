@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDG 16 Impact Survey</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <main style="max-width: 800px; margin: 0 auto; padding: 2rem;">
+        <h1>SDG 16 Progress Survey</h1>
+        <p>Help us improve peace, justice, and institutions worldwide</p>
+
+        <form action="mailto:okentsantos@isnaples.it" method="post" enctype="text/plain">
+            <!-- Personal Information -->
+            <fieldset style="margin-bottom: 2rem; padding: 1.5rem;">
+                <legend>Your Information</legend>
+                <div style="margin-bottom: 1rem;">
+                    <label>Full Name: 
+                        <input type="text" name="name" required style="width: 100%; padding: 0.5rem;">
+                    </label>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label>Email: 
+                        <input type="email" name="email" required style="width: 100%; padding: 0.5rem;">
+                    </label>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label>Phone Number: 
+                        <input type="tel" name="phone" style="width: 100%; padding: 0.5rem;">
+                    </label>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label>Date of Birth: 
+                        <input type="date" name="dob" style="width: 100%; padding: 0.5rem;">
+                    </label>
+                </div>
+                <div>
+                    <label>Country: 
+                        <select name="country" style="width: 100%; padding: 0.5rem;">
+                            <option value="">Select Country</option>
+                            <option>Italy</option>
+                            <option>Kenya</option>
+                            <option>Brazil</option>
+                            <option>United States</option>
+                            <option>India</option>
+                        </select>
+                    </label>
+                </div>
+            </fieldset>
+
+            <!-- Awareness Section -->
+            <fieldset style="margin-bottom: 2rem; padding: 1.5rem;">
+                <legend>SDG 16 Awareness</legend>
+                <div style="margin-bottom: 1rem;">
+                    <p>How familiar are you with SDG 16?</p>
+                    <label><input type="radio" name="awareness" value="1"> 1 - Not familiar</label><br>
+                    <label><input type="radio" name="awareness" value="3"> 3 - Somewhat familiar</label><br>
+                    <label><input type="radio" name="awareness" value="5"> 5 - Very familiar</label>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <p>Have you participated in any SDG 16 initiatives before?</p>
+                    <label><input type="radio" name="participation" value="yes"> Yes</label><br>
+                    <label><input type="radio" name="participation" value="no"> No</label>
+                </div>
+            </fieldset>
+
+            <!-- Priority Assessment -->
+            <fieldset style="margin-bottom: 2rem; padding: 1.5rem;">
+                <legend>Priority Areas</legend>
+                <div style="margin-bottom: 1rem;">
+                    <p>Which areas need most improvement? (Select up to 3)</p>
+                    <label><input type="checkbox" name="priorities[]" value="corruption"> Anti-Corruption</label><br>
+                    <label><input type="checkbox" name="priorities[]" value="justice"> Access to Justice</label><br>
+                    <label><input type="checkbox" name="priorities[]" value="institutions"> Institutional Transparency</label><br>
+                    <label><input type="checkbox" name="priorities[]" value="education"> Civic Education</label><br>
+                    <label><input type="checkbox" name="priorities[]" value="violence"> Reducing Violence</label>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <p>Which SDGs do you think are most interconnected with SDG 16? (Select all that apply)</p>
+                    <label><input type="checkbox" name="interconnected[]" value="sdg1"> SDG 1 - No Poverty</label><br>
+                    <label><input type="checkbox" name="interconnected[]" value="sdg4"> SDG 4 - Quality Education</label><br>
+                    <label><input type="checkbox" name="interconnected[]" value="sdg5"> SDG 5 - Gender Equality</label><br>
+                    <label><input type="checkbox" name="interconnected[]" value="sdg10"> SDG 10 - Reduced Inequalities</label>
+                </div>
+            </fieldset>
+
+            <!-- Feedback Section -->
+            <fieldset style="margin-bottom: 2rem; padding: 1.5rem;">
+                <legend>Your Feedback</legend>
+                <div style="margin-bottom: 1rem;">
+                    <label>Suggestions for improvement:
+                        <textarea name="feedback" rows="5" style="width: 100%; padding: 0.5rem;"></textarea>
+                    </label>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label>Additional comments:
+                        <textarea name="comments" rows="3" style="width: 100%; padding: 0.5rem;"></textarea>
+                    </label>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label>Upload supporting document (optional):
+                        <input type="file" name="document" accept=".pdf,.doc,.docx">
+                    </label>
+                </div>
+                <div>
+                    <label>Upload an image (optional):
+                        <input type="file" name="image" accept=".jpg,.png,.jpeg">
+                    </label>
+                </div>
+            </fieldset>
+
+            <!-- Additional Questions -->
+            <fieldset style="margin-bottom: 2rem; padding: 1.5rem;">
+                <legend>Additional Questions</legend>
+                <div style="margin-bottom: 1rem;">
+                    <label>On a scale of 1 to 10, how important is SDG 16 to you?
+                        <input type="number" name="importance" min="1" max="10" style="width: 100%; padding: 0.5rem;">
+                    </label>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label>How satisfied are you with your country's progress on SDG 16? (1 = Not satisfied, 10 = Very satisfied)
+                        <input type="range" name="satisfaction" min="1" max="10" style="width: 100%;">
+                    </label>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label>Estimated population of your country:
+                        <input type="number" name="population" style="width: 100%; padding: 0.5rem;">
+                    </label>
+                </div>
+            </fieldset>
+
+            <!-- Form Controls -->
+            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                <button type="submit" style="padding: 0.75rem 1.5rem; background: #2c3e50; color: white; border: none;">
+                    Submit Survey
+                </button>
+                <button type="reset" style="padding: 0.75rem 1.5rem; background: #e74c3c; color: white; border: none;">
+                    Clear Form
+                </button>
+            </div>
+        </form>
+    </main>
+
+    <footer style="background: #f0f0f0; padding: 2rem; margin-top: 3rem;">
+        <div style="text-align: center;">
+            <p>All responses are anonymous and confidential</p>
+            <p>© 2023 SDG 16 Initiative | 
+                <a href="privacy.html" style="color: #3498db;">Privacy Policy</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
